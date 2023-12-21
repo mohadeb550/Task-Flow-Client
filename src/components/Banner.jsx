@@ -1,6 +1,15 @@
+import { useNavigate } from "react-router-dom"
+import useAuth from "../Hooks/useAuth"
 
 
 export default function Banner() {
+  const { currentUser } = useAuth()
+  const navigate = useNavigate();
+
+  const handleExplore = () => {
+    if(currentUser) navigate('/dashboard')
+    else  navigate('/login')
+  }
 
 
     return (
@@ -10,11 +19,12 @@ export default function Banner() {
         <img src="3d-illustration-pen-putting-blue-ticks-paper-removebg-preview.png" className=" h-[200px] md:h-full w-full object-cover" />
     </div>
     
-    <div className=" text-center text-neutral-content flex-1">
+    <div className="text-neutral-content flex-1">
       <div className="max-w-4xl space-y-2 lg:space-y-5">
         <h1 className=" text-4xl lg:text-7xl font-racing text-white/90"> Effortless Task Mastery</h1>
         <p className="text-xs md:text-base italic text-white/80">Welcome to TaskFlow, where productivity meets simplicity! Streamline your life and boost your efficiency with our intuitive task management platform. Organize, prioritize, and conquer your daily tasks effortlessly. </p>
-        
+
+        <button onClick={handleExplore} className={`font-semibold text-[#00719C]  text-sm md:text-[16px] py-3 px-5 rounded-sm bg-white/90 hover:bg-gray-100 `}> Let's Explore </button>
       </div>
     </div>
 
