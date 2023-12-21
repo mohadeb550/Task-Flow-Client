@@ -1,16 +1,19 @@
 import { IoAddCircle } from "react-icons/io5";
 import { TiDelete } from "react-icons/ti";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { SiTodoist } from "react-icons/si";
 import { MdAccessTime } from "react-icons/md";
 import { FcHighPriority } from "react-icons/fc";
-import { FcLowPriority } from "react-icons/fc";
-import { FcMediumPriority } from "react-icons/fc";
 import { useState } from "react";
 import CreateTask from "../Components/CreateTask";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import useAuth from "../../Hooks/useAuth";
+import { useDrop } from "react-dnd";
+import TodoList from "../Components/TodoList"
+import { MdFileDownload } from "react-icons/md";
+import OngoingList from "../Components/OngoingList";
+import CompletedList from "../Components/CompletedList";
+import useInvalidate from "../../Utils/useInvalidate";
 
 
 
@@ -19,14 +22,66 @@ const Tasks = () => {
     const [ open, setOpen ] = useState(false)
     const axiosPublic = useAxiosPublic()
     const { currentUser } = useAuth()
+    const refetchData = useInvalidate();
 
-    const { data: tasks =[], refetch } = useQuery({
-        queryKey: ['tasks'],
+    // task fetching based on the todo status 
+
+    const { data: todoTasks =[], refetch: todoRefetch } = useQuery({
+        queryKey: ['todoTasks'],
         queryFn: async () => {
-          const data = await axiosPublic.get(`/get-tasks/${currentUser.email}`);
+          const data = await axiosPublic.get(`/get-tasks/${currentUser.email}/todo`);
           return data.data;
         }
       })
+
+    const { data: ongoingTasks =[] } = useQuery({
+        queryKey: ['ongoingTasks'],
+        queryFn: async () => {
+          const data = await axiosPublic.get(`/get-tasks/${currentUser.email}/ongoing`);
+          return data.data;
+        }
+      })
+
+    const { data: completedTasks =[] } = useQuery({
+        queryKey: ['completedTasks'],
+        queryFn: async () => {
+          const data = await axiosPublic.get(`/get-tasks/${currentUser.email}/completed`);
+          return data.data;
+        }
+      })
+
+
+      const [ { isOver: todoOver }, todoDrop ] = useDrop(()=> ({
+        accept : "task",
+        drop: () => ({ name: "todo"}),
+        collect : (monitor) =>  ({
+            isOver : !!monitor.isOver(),
+            canDrop: !!monitor.canDrop(),
+        })
+      }), [],)
+
+
+      const [ { isOver:onGoingOver }, ongoingDrop ] = useDrop(()=> ({
+        accept : "task",
+        drop: () => ({ name: "ongoing"}),
+        collect : (monitor) =>  ({
+            isOver : !!monitor.isOver(),
+            canDrop: !!monitor.canDrop(),
+        })
+      }), [],)
+
+     
+      const [ { isOver:completeOver }, completeDrop ] = useDrop(()=> ({
+        accept : "task",
+        drop: () => ({ name: "completed"}),
+        collect : (monitor) =>  ({
+            isOver : !!monitor.isOver(),
+            canDrop: !!monitor.canDrop(),
+        })
+      }), [],)
+
+     
+
 
 
       const handleDelete = (id) => {
@@ -34,7 +89,7 @@ const Tasks = () => {
 
          .then(res => {
           if(res.data.deletedCount){
-            refetch()
+            refetchData()
           }
          })
       }
@@ -43,38 +98,40 @@ const Tasks = () => {
     return (
         <section className="w-full">
 
-            <CreateTask open={open} setOpen={setOpen} refetch={refetch} />
+            <CreateTask open={open} setOpen={setOpen} refetch={todoRefetch} />
 
               <h1 className=" text-3xl lg:text-5xl font-racing text-[#00719C] text-center mb-16"> Your Tasks</h1>
 
                 <section className="grid grid-cols-1 xl:grid-cols-3 gap-7 ">
-                <div >
+                <div   ref={todoDrop} className={`${todoOver && 'opacity-50 relative'}`}>
                 <h1 className=" text-2xl lg:text-2xl font-racing bg-[#00719C] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Todo List <span onClick={()=> setOpen(true)} className="cursor-pointer"> <IoAddCircle size={28} /></span> </h1>
+                {todoOver && <div className="flex items-center justify-center">
+                  <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
 
-                {tasks?.map(task => <div key={task._id} className="p-2 bg-slate-100 my-4 relative">
-                    <span onClick={() => handleDelete(task._id)} className=" text-red-600 absolute top-0 right-0"> <TiDelete size={26} /> </span>
-                <h1 className="text-base lg:text-xl  text-[#00719C] flex items-center gap-3 pt-3 font-prompt "> <SiTodoist/>  {task.title}  </h1>
-
-               
-             <div className="flex items-center gap-3 justify-between">
-             <span className="flex items-center gap-2 my-2 text-gray-400"> <MdAccessTime/> Deadline : {task.deadline} </span>
-             <span className="flex items-center gap-2 my-2"> <FcHighPriority/> <span className="text-gray-500">  Priority : <span className="capitalize">{task.priority}</span> </span> </span>
-             </div>
-
-                <p className=" text-gray-500  flex items-center justify-between gap-4 font-prompt pt-3"> {task?.description}  </p>
-              
-                </div>)}
+                {/* todo task section  */}
+                {todoTasks?.map(task => <TodoList key={task._id} task={task} handleDelete={handleDelete} /> )}
                 </div>
 
 
-                
-                <div >
-                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#00719C] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Ongoing Tasks </h1>
+                {/* ongoing task section  */}
+                <div ref={ongoingDrop} className={`${onGoingOver && 'opacity-50 relative'}`}>
+                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#FF7400] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Ongoing  </h1>
+                {onGoingOver && <div className="flex items-center justify-center">
+                  <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
+
+                {ongoingTasks?.map(task => <OngoingList key={task._id} task={task} handleDelete={handleDelete} /> )}
                 </div>
 
-                <div >
-                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#00719C] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Completed Tasks </h1>
+
+                {/* completed task section */}
+                <div ref={completeDrop} className={`${completeOver && 'opacity-50 relative'}`}>
+                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#6FC915] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Completed  </h1>
+                {completeOver && <div className="flex items-center justify-center">
+                  <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
+
+                {completedTasks?.map(task => <CompletedList key={task._id} task={task} handleDelete={handleDelete} /> )}
                 </div>
+
                 </section>
               
         </section>

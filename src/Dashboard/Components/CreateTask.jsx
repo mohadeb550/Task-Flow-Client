@@ -6,10 +6,11 @@ import useAxiosSecure from '../../Hooks/useAxiosSecure'
 import { useState } from "react";
 import { IoMdStarOutline } from "react-icons/io";
 import { IoMdStar } from "react-icons/io";
+import { QueryClient } from "@tanstack/react-query";
 
 
 
-export default function CreateTask({ open, setOpen, deliveryManId, refetch}) {
+export default function CreateTask({ open, setOpen, refetch}) {
     
     const axiosSecure = useAxiosSecure();
     const { currentUser } = useAuth();
@@ -25,6 +26,7 @@ export default function CreateTask({ open, setOpen, deliveryManId, refetch}) {
           deadline: form.deadline.value,
           priority: form.priority.value,
           description: form.description.value,
+          status: 'todo'
       }
 
     axiosSecure.put(`/add-task`, task)
@@ -62,8 +64,8 @@ export default function CreateTask({ open, setOpen, deliveryManId, refetch}) {
 
 
 <div className="relative z-0 w-full mb-5 group">
+<label className="text-gray-500"> Select Task Priority </label>
 <select className="select select-info w-full max-w-xs rounded-sm" name="priority" >
-  <option disabled selected> Select Task Priority</option>
   <option value='low'> Low</option>
   <option value='medium'> Medium</option>
   <option value='high'> High</option>
