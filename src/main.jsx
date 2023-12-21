@@ -11,6 +11,7 @@ import Layout from "./Dashboard/Layout";
 import MyProfile from "./Dashboard/Pages/MyProfile";
 
 import { QueryClient, QueryClientProvider,} from '@tanstack/react-query'
+import Tasks from "./Dashboard/Pages/Tasks";
 const queryClient = new QueryClient();
 
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   {path: "/dashboard", element: <Layout/>, children: [
 
     {path: "/dashboard/profile", element: <MyProfile/> },
+    {path: "/dashboard/tasks", element: <Tasks/> },
   ]},
 ]);
 
