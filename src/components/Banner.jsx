@@ -13,7 +13,7 @@ export default function Banner() {
 
 
     return (
-     <div  className="hero h-[480px] lg:h-[500px] mb-3 md:mb-8 font-play flex flex-col md:flex-row justify-around items-center bg-[#009BD6]  px-10 md:px-16 md:pb-12" >
+     <div  className="hero h-[480px] lg:h-[500px] mb-3 md:mb-8 font-play flex flex-col md:flex-row justify-around items-center bg-[#00719C]  px-10 md:px-16 md:pb-12" >
 
 <div className="flex-1 h-full w-full pt-6 md:pt-14">
         <img src="3d-illustration-pen-putting-blue-ticks-paper-removebg-preview.png" className=" h-[200px] md:h-full w-full object-cover" />

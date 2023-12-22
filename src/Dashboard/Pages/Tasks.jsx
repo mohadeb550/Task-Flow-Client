@@ -1,8 +1,4 @@
 import { IoAddCircle } from "react-icons/io5";
-import { TiDelete } from "react-icons/ti";
-import { SiTodoist } from "react-icons/si";
-import { MdAccessTime } from "react-icons/md";
-import { FcHighPriority } from "react-icons/fc";
 import { useState } from "react";
 import CreateTask from "../Components/CreateTask";
 import { useQuery } from "@tanstack/react-query";
@@ -96,15 +92,15 @@ const Tasks = () => {
 
 
     return (
-        <section className="w-full">
+        <section className="w-full px-4">
 
             <CreateTask open={open} setOpen={setOpen} refetch={todoRefetch} />
 
               <h1 className=" text-3xl lg:text-5xl font-racing text-[#00719C] text-center mb-16"> Your Tasks</h1>
 
                 <section className="grid grid-cols-1 xl:grid-cols-3 gap-7 ">
-                <div   ref={todoDrop} className={`${todoOver && 'opacity-50 relative'}`}>
-                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#00719C] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Todo List <span onClick={()=> setOpen(true)} className="cursor-pointer"> <IoAddCircle size={28} /></span> </h1>
+                <div   ref={todoDrop} className={`${todoOver && 'opacity-50 relative border border-[#00719C]/70'}`}>
+                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#00719C] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16 rounded"> Todo List <span onClick={()=> setOpen(true)} className="cursor-pointer"> <IoAddCircle size={28} /></span> </h1>
                 {todoOver && <div className="flex items-center justify-center">
                   <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
 
@@ -114,20 +110,20 @@ const Tasks = () => {
 
 
                 {/* ongoing task section  */}
-                <div ref={ongoingDrop} className={`${onGoingOver && 'opacity-50 relative'}`}>
-                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#FF7400] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Ongoing  </h1>
+                <div ref={ongoingDrop} className={`${onGoingOver && 'opacity-50 relative border border-[#FF7400]/70'}`}>
+                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#FF7400] text-white/90 text-center  py-3 px-16  rounded"> Ongoing  </h1>
                 {onGoingOver && <div className="flex items-center justify-center">
-                  <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
+                  <span className="text-5xl text-[#FF7400] my-2"> <MdFileDownload/></span></div>}
 
                 {ongoingTasks?.map(task => <OngoingList key={task._id} task={task} handleDelete={handleDelete} /> )}
                 </div>
 
 
                 {/* completed task section */}
-                <div ref={completeDrop} className={`${completeOver && 'opacity-50 relative'}`}>
-                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#6FC915] text-white/90 text-center flex items-center justify-between gap-4 py-3 px-16"> Completed  </h1>
+                <div ref={completeDrop} className={`${completeOver && 'opacity-50 relative border border-[#6FC915]/70'}`}>
+                <h1 className=" text-2xl lg:text-2xl font-racing bg-[#6FC915] text-white/90 text-center  py-3 px-16 rounded"> Completed  </h1>
                 {completeOver && <div className="flex items-center justify-center">
-                  <span className="text-5xl text-[#00719C] my-2"> <MdFileDownload/></span></div>}
+                  <span className="text-5xl text-[#6FC915] my-2"> <MdFileDownload/></span></div>}
 
                 {completedTasks?.map(task => <CompletedList key={task._id} task={task} handleDelete={handleDelete} /> )}
                 </div>

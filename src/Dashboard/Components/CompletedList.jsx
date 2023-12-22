@@ -4,15 +4,14 @@ import { SiTodoist } from "react-icons/si";
 import { MdAccessTime } from "react-icons/md";
 import { FcHighPriority } from "react-icons/fc";
 import { useDrag } from "react-dnd";
-import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import useInvalidate from "../../Utils/useInvalidate";
+import useUpdateTask from "../../Hooks/useUpdateTask";
+
 
 
 
 const CompletedList = ({ handleDelete, task }) => {
 
-    const axiosPublic = useAxiosPublic()
-    const refetchData = useInvalidate();
+    const updateTask = useUpdateTask();
 
     
     const [ { isDragging }, drag ] = useDrag(() => ({
@@ -21,13 +20,7 @@ const CompletedList = ({ handleDelete, task }) => {
         end: (item, monitor ) => {
             const dropResult = monitor.getDropResult();
             if(item && dropResult){
-           
-                    axiosPublic.patch(`/update-task/${item._id}`, { status : dropResult.name})
-                    .then(res => {
-                   if( res.data.modifiedCount){
-                      refetchData();
-                     }})
-                
+               updateTask(item._id, dropResult.name)   
         }
         },
         collect: (monitor) => ({
@@ -37,10 +30,10 @@ const CompletedList = ({ handleDelete, task }) => {
 
 
     return (
-        <div ref={drag}  className="p-2 bg-slate-100 my-4 relative">
+        <div ref={drag}  className={`p-2  my-4 relative rounded ${isDragging? 'bg-gray-700': 'bg-[#6FC915]/10'}`}>
             
                     <span onClick={() => handleDelete(task._id)} className=" text-red-600 absolute top-0 right-0"> <TiDelete size={26} /> </span>
-                <h1 className="text-base lg:text-xl  text-[#00719C] flex items-center gap-3 pt-3 font-prompt "> <SiTodoist/>  {task.title}  </h1>
+                <h1 className=" lg:text-xl  text-[#228C22] flex items-center gap-3 pt-4 font-prompt flex-wrap "> <SiTodoist size={25}/>  {task.title}  </h1>
 
                
              <div className="flex items-center gap-3 justify-between">
