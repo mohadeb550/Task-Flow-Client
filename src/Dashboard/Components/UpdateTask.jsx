@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import useAxiosPublic from '../../Hooks/useAxiosPublic'
 import { useQuery } from "@tanstack/react-query";
 import useInvalidate from "../../Utils/useInvalidate";
+import { enqueueSnackbar } from "notistack";
 
 
 
@@ -39,7 +40,7 @@ export default function UpdateTask({ open, setOpen, taskId}) {
             if(res.data.matchedCount || res.data.modifiedCount){
               setOpen(false);
               refetchData()
-              toast.success('Update Successful 😛!', {duration: 3000})
+              enqueueSnackbar('Task Updated! 🍅')
             }
           }).catch(error => {
             toast.error('Something Went Wrong, Try Again', {duration: 3000})

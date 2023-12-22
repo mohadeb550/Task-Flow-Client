@@ -1,6 +1,7 @@
 
 import Banner from "../components/Banner";
 import Footer from "../components/Shared/Footer";
+import UsingPeople from "../components/UsingPeople";
 
 
 export default function Home() {
@@ -8,9 +9,7 @@ export default function Home() {
   return (
     <>
     <Banner/>
-    <section className="md:px-6 lg:px-4 xl:px-0">
-
-    </section>
+    <UsingPeople/>
     <Footer/>
     </>
   )

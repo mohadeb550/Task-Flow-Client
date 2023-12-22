@@ -10,6 +10,7 @@ import { MdFileDownload } from "react-icons/md";
 import OngoingList from "../Components/OngoingList";
 import CompletedList from "../Components/CompletedList";
 import useInvalidate from "../../Utils/useInvalidate";
+import {enqueueSnackbar } from 'notistack'
 
 
 
@@ -86,13 +87,14 @@ const Tasks = () => {
          .then(res => {
           if(res.data.deletedCount){
             refetchData()
+            enqueueSnackbar('Task Deleted! 🥤')
           }
          })
       }
 
 
     return (
-        <section className="w-full px-4">
+        <section className="max-w-[1450px] mx-auto px-4">
 
             <CreateTask open={open} setOpen={setOpen} refetch={todoRefetch} />
 

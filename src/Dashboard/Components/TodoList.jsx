@@ -41,8 +41,8 @@ const TodoList = ({ handleDelete, task }) => {
             
                     <div className="absolute top-0 right-0 flex items-center gap-3 p-4">
                    
-                    <span onClick={() => updateTask(task._id, 'ongoing')} className=" text-[#00719C] hover:bg-slate-200 flex items-center gap-1 border border-[#00719C] p-1 rounded-full text-xs"> <IoShieldCheckmarkOutline size={17}  /> Mark As Ongoing </span>
-                    <span onClick={() => updateTask(task._id, 'completed')} className=" text-[#00719C] hover:bg-slate-200 flex items-center gap-1 border border-[#00719C] p-1 rounded-full text-xs"> <IoCheckmarkCircleOutline size={17} /> Mark As Completed </span>
+                    <span onClick={() => updateTask(task._id, 'ongoing')} className=" text-[#00719C] hover:bg-slate-200 flex items-center gap-1 border border-[#00719C] p-1 rounded-full text-xs whitespace-nowrap"> <IoShieldCheckmarkOutline size={17}  /> Ongoing </span>
+                    <span onClick={() => updateTask(task._id, 'completed')} className=" text-[#00719C] hover:bg-slate-200 flex items-center gap-1 border border-[#00719C] p-1 rounded-full text-xs whitespace-nowrap"> <IoCheckmarkCircleOutline size={17} /> Completed </span>
 
                    {open &&  <UpdateTask open={open} setOpen={setOpen} taskId={taskId}  />}
                     <span onClick={() => { setTaskId(task._id); setOpen(true)}} className=" text-[#00719C] "> <AiFillEdit size={24} /> </span>

@@ -17,7 +17,7 @@ const Layout = () => {
   <div className="drawer-content flex flex-col">
 
     {/* Page content here */}
-   <section className="max-w-[1500px] mx-auto mt-14">
+   <section className="max-w-[1500px] mt-14">
    <Outlet/>
    <Toaster/>
    </section>
