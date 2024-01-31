@@ -32,7 +32,7 @@ const TodoList = ({ handleDelete, task }) => {
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })
-      }), [], )
+      }), [],)
     
 
 
@@ -49,7 +49,7 @@ const TodoList = ({ handleDelete, task }) => {
                     <span onClick={() => handleDelete(task._id)} className=" text-red-600 "> <TiDelete size={26} /> </span>
                     </div>
                 <h1 className="text-base lg:text-xl  text-[#00719C] flex items-center gap-3 pt-14 font-prompt  flex-wrap"> <SiTodoist size={25}/>  {task.title}  </h1>
-
+      
                
              <div className="flex items-center gap-3 justify-between">
              <span className="flex items-center gap-2 my-2 text-gray-400"> <MdAccessTime/> Deadline : {task.deadline} </span>

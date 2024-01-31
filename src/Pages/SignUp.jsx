@@ -10,6 +10,7 @@ import useAuth from "../Hooks/useAuth.js";
 import { useState } from "react";
 
 import useAxiosSecure from "../Hooks/useAxiosSecure.jsx";
+import DropInput from "../Dashboard/Components/DropInput.jsx";
 
 
 
@@ -23,6 +24,7 @@ export default function SignUp() {
   const axiosPublic = useAxiosPublic()
   const axiosSecure = useAxiosSecure()
   const [ loading , setLoading ] = useState(false)
+  const [ droppedImageFile, setDropImageFile ] = useState({});
  
 
  
@@ -33,15 +35,15 @@ export default function SignUp() {
     const onSubmit = async (data) => {
       setLoading(true)
 
-      const imageData = { image: data.photo[0] };
-
+      // const imageData = { image: data.photo[0] };
+      const imageData = { image: droppedImageFile };
+  
       const res = await axiosPublic.post(imageUploadApi, imageData, {
         headers: {
           'content-type' : 'multipart/form-data'
         }
       })
       const imageURL =  res.data.data.display_url;
-
 
       createUser(data.email, data.password)
       .then(result => {
@@ -73,6 +75,10 @@ export default function SignUp() {
     
     }
 
+    const handleDrop = (acceptedFiles) => {
+      // Handle the dropped files here
+      setDropImageFile(acceptedFiles[0])
+    };
 
 
   return (
@@ -126,7 +132,7 @@ export default function SignUp() {
             <input type="text" placeholder="Your Profession" className="input  bg-transparent  border-white/50 rounded-sm capitalize" {...register('profession', {required: true })} />
             <span className="text-red-400 font-semibold text-sm p-1"> {errors.phone?.type === 'required' && 'Phone is required'} </span>
 
-            <div className="form-control">
+            {/* <div className="form-control">
             <label className="label">
               <span className="">Upload Photo</span>
             </label>
@@ -140,7 +146,9 @@ export default function SignUp() {
 
             
             <span className="text-red-400 font-semibold text-sm p-1"> {errors.photo?.type === 'required' && 'Photo is required'}  </span>
-          </div>
+          </div> */}
+
+          <DropInput onDrop={handleDrop} />
 
             <div>
                 <h4 className="text-sm font-semibold text-amber-400"> Already Have An Account? <Link to='/login'> <span className="text-white/80 hover:underline"> Login</span></Link> </h4>

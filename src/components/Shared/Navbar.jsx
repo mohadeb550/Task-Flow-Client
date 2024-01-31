@@ -51,7 +51,7 @@ export default function Navbar() {
 
     </div>
     <div className="flex items-center gap-1">
-    <img src='/pngwing.com (33).png' className="w-9 md:w-12 lg:w-[50px]"/>
+    <img src='/pngwing.com (34).png' className="w-9 md:w-12 lg:w-[50px]"/>
     <p className="text-[18px]  md:text-xl lg:text-2xl text-amber-400 font-racing whitespace-nowrap "> Task <span className="text-white/90"> Flow</span> </p>
     </div>
   </div>
